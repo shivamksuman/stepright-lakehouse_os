@@ -1,0 +1,73 @@
+name: Lint & Syntax Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install lint tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff nbqa nbformat
+
+      - name: Lint .py files — bronze
+        run: |
+          if find bronze -name "*.py" | grep -q .; then
+            ruff check bronze/ --extend-exclude "*.ipynb"
+          else
+            echo "No .py files in bronze/"
+          fi
+
+      - name: Lint .py files — silver
+        run: |
+          if find silver -name "*.py" | grep -q .; then
+            ruff check silver/ --extend-exclude "*.ipynb"
+          else
+            echo "No .py files in silver/"
+          fi
+
+      - name: Lint .py files — gold
+        run: |
+          if find gold -name "*.py" | grep -q .; then
+            ruff check gold/ --extend-exclude "*.ipynb"
+          else
+            echo "No .py files in gold/"
+          fi
+
+      - name: Lint notebooks (.ipynb) — bronze
+        run: |
+          if find bronze -name "*.ipynb" | grep -q .; then
+            nbqa ruff bronze/
+          else
+            echo "No notebooks in bronze/"
+          fi
+
+      - name: Lint notebooks (.ipynb) — silver
+        run: |
+          if find silver -name "*.ipynb" | grep -q .; then
+            nbqa ruff silver/
+          else
+            echo "No notebooks in silver/"
+          fi
+
+      - name: Lint notebooks (.ipynb) — gold
+        run: |
+          if find gold -name "*.ipynb" | grep -q .; then
+            nbqa ruff gold/
+          else
+            echo "No notebooks in gold/"
+          fi
