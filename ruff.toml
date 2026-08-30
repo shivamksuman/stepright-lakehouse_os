@@ -2,9 +2,9 @@
 # Databricks injects these names at runtime (spark, dbutils, display, etc.)
 # so we tell ruff they're valid globals instead of "undefined name" errors.
 
-[lint]
-# Treat these as pre-defined globals (like builtins), not undefined names
+# NOTE: `builtins` must be top-level, not inside [lint]
 builtins = ["spark", "dbutils", "display", "sqlContext", "sc", "table", "dbfs"]
 
 # You can also fully disable specific rules if needed instead:
+# [lint]
 # ignore = ["F821"]
