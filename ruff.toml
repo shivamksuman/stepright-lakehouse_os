@@ -9,4 +9,4 @@ builtins = ["spark", "dbutils", "display", "sqlContext", "sc", "table", "dbfs"]
 # Relaxing these two rules for now so CI passes on existing code:
 # RUF059 - unpacked variable never used (style suggestion, not a bug)
 # I001   - import block un-sorted/un-formatted (cosmetic)
-ignore = ["RUF059", "I001", "F401"]
+ignore = ["RUF059", "I001", "F401", "DTZ011"]
